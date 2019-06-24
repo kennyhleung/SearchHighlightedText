@@ -36,31 +36,26 @@ namespace SearchHighlightedText
             Application.EnableVisualStyles();
             NotifyIcon systemTray = new NotifyIcon();
             ContextMenu menu = new ContextMenu();
+            MenuItem pause = new MenuItem();
             MenuItem exit = new MenuItem();
-            exit.Index = 0;
-            menu.MenuItems.AddRange(new MenuItem[] { exit });
+            pause.Index = 0;
+            exit.Index = 1;
+
+            pause.Text = "Pause hotkeys";
+            pause.Checked = false;
+            pause.Click += new EventHandler(Pause_Click);
+
             exit.Text = "Exit";
             exit.Click += new EventHandler(Exit_Click);
+            menu.MenuItems.AddRange(new MenuItem[] { pause, exit});
+            
+            
             systemTray.Icon = new Icon(Assembly.GetExecutingAssembly().GetManifestResourceStream(("SearchHighlightedText.app.ico")));
             systemTray.Text = "Search Highlighted Text";
             systemTray.ContextMenu = menu;
             systemTray.Visible = true;
 
-            hotKeyNumber = HotKeyManager.RegisterHotKey(Keys.C, KeyModifiers.Alt);
-            hotKeyNumberImage = HotKeyManager.RegisterHotKey(Keys.X, KeyModifiers.Alt);
-            alpha = HotKeyManager.RegisterHotKey(Keys.A, KeyModifiers.Alt);
-            beta = HotKeyManager.RegisterHotKey(Keys.B, KeyModifiers.Alt);
-            delta = HotKeyManager.RegisterHotKey(Keys.D, KeyModifiers.Alt);
-            gamma = HotKeyManager.RegisterHotKey(Keys.G, KeyModifiers.Alt);
-            insertIncreaseArrow = HotKeyManager.RegisterHotKey(Keys.Up, KeyModifiers.Alt);
-            insertDecreaseArrow = HotKeyManager.RegisterHotKey(Keys.Down, KeyModifiers.Alt);
-            insertForwardArrow = HotKeyManager.RegisterHotKey(Keys.Right, KeyModifiers.Alt);
-
-            hotKeyNumber2 = HotKeyManager.RegisterHotKey(Keys.Oem4, KeyModifiers.Control);
-            hotKeyNumberImage2 = HotKeyManager.RegisterHotKey(Keys.Oem6, KeyModifiers.Control);
-            insertIncreaseArrow2 = HotKeyManager.RegisterHotKey(Keys.OemQuotes, KeyModifiers.Control);
-            insertDecreaseArrow2 = HotKeyManager.RegisterHotKey(Keys.OemSemicolon, KeyModifiers.Control);
-            insertForwardArrow2 = HotKeyManager.RegisterHotKey(Keys.L, KeyModifiers.Control);
+            RegisterKeys();
 
             HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(CopyKeyboardSearch);
 
@@ -143,6 +138,47 @@ namespace SearchHighlightedText
 
         static void Exit_Click(object sender, EventArgs e)
         {
+            UnregisterKeys();
+            Application.Exit();
+        }
+
+        static void Pause_Click(object sender, EventArgs e)
+        {
+            MenuItem pause = (MenuItem) sender;
+            if (pause.Checked == true)
+            {
+                RegisterKeys();
+                pause.Checked = false;
+            }
+            else
+            {
+                UnregisterKeys();
+                pause.Checked = true;
+            }
+        }
+
+
+        static void RegisterKeys()
+        {
+            hotKeyNumber = HotKeyManager.RegisterHotKey(Keys.C, KeyModifiers.Alt);
+            hotKeyNumberImage = HotKeyManager.RegisterHotKey(Keys.X, KeyModifiers.Alt);
+            alpha = HotKeyManager.RegisterHotKey(Keys.A, KeyModifiers.Alt);
+            beta = HotKeyManager.RegisterHotKey(Keys.B, KeyModifiers.Alt);
+            delta = HotKeyManager.RegisterHotKey(Keys.D, KeyModifiers.Alt);
+            gamma = HotKeyManager.RegisterHotKey(Keys.G, KeyModifiers.Alt);
+            insertIncreaseArrow = HotKeyManager.RegisterHotKey(Keys.Up, KeyModifiers.Alt);
+            insertDecreaseArrow = HotKeyManager.RegisterHotKey(Keys.Down, KeyModifiers.Alt);
+            insertForwardArrow = HotKeyManager.RegisterHotKey(Keys.Right, KeyModifiers.Alt);
+
+            hotKeyNumber2 = HotKeyManager.RegisterHotKey(Keys.Oem4, KeyModifiers.Control);
+            hotKeyNumberImage2 = HotKeyManager.RegisterHotKey(Keys.Oem6, KeyModifiers.Control);
+            insertIncreaseArrow2 = HotKeyManager.RegisterHotKey(Keys.OemQuotes, KeyModifiers.Control);
+            insertDecreaseArrow2 = HotKeyManager.RegisterHotKey(Keys.OemSemicolon, KeyModifiers.Control);
+            insertForwardArrow2 = HotKeyManager.RegisterHotKey(Keys.L, KeyModifiers.Control);
+        }
+
+        static void UnregisterKeys()
+        {
             HotKeyManager.UnregisterHotKey(hotKeyNumber);
             HotKeyManager.UnregisterHotKey(hotKeyNumberImage);
             HotKeyManager.UnregisterHotKey(alpha);
@@ -157,8 +193,10 @@ namespace SearchHighlightedText
             HotKeyManager.UnregisterHotKey(insertIncreaseArrow2);
             HotKeyManager.UnregisterHotKey(insertDecreaseArrow2);
             HotKeyManager.UnregisterHotKey(insertForwardArrow2);
-            Application.Exit();
         }
+
+     
+
 
         //Source: https://stackoverflow.com/questions/3654787/global-hotkey-in-console-application
         public class HotKeyManager
