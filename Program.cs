@@ -68,27 +68,27 @@ namespace SearchHighlightedText
             {
 
                 case Keys.Down: 
-                case Keys.OemSemicolon:
+                case Keys.Oem6:
                     Thread.Sleep(200);
                     SendKeys.Send('\u2193'.ToString());
                     //SendKeys.Send(' '.ToString());
                     break;
 
                 case Keys.Up:
-                case Keys.OemQuotes:
+                case Keys.Oem4:
                     Thread.Sleep(200);
                     SendKeys.Send('\u2191'.ToString());
                     //SendKeys.Send(' '.ToString());
                     break;
 
-                case Keys.L:
+                case Keys.OemPipe:
                 case Keys.Right:
                     Thread.Sleep(200);
                     SendKeys.Send('\u2192'.ToString());
                     SendKeys.Send(' '.ToString());
                     break;
 
-                case Keys.Oem4:
+                case Keys.OemSemicolon:
                 case Keys.C:
                     //Thread.Sleep(500);
                     SendKeys.Send("^c");
@@ -98,7 +98,7 @@ namespace SearchHighlightedText
                         Process.Start("https://www.google.com/search?q=" +
                                       lastClipboardText.TrimStart(' ').TrimEnd(' ').Replace(" ", "+"));
                     break;
-                case Keys.Oem6:
+                case Keys.OemQuotes:
                 case Keys.X:
                     //Thread.Sleep(500);
                     //SendKeys.Send("^c");
@@ -170,11 +170,11 @@ namespace SearchHighlightedText
             insertDecreaseArrow = HotKeyManager.RegisterHotKey(Keys.Down, KeyModifiers.Alt);
             insertForwardArrow = HotKeyManager.RegisterHotKey(Keys.Right, KeyModifiers.Alt);
 
-            hotKeyNumber2 = HotKeyManager.RegisterHotKey(Keys.Oem4, KeyModifiers.Control);
-            hotKeyNumberImage2 = HotKeyManager.RegisterHotKey(Keys.Oem6, KeyModifiers.Control);
-            insertIncreaseArrow2 = HotKeyManager.RegisterHotKey(Keys.OemQuotes, KeyModifiers.Control);
-            insertDecreaseArrow2 = HotKeyManager.RegisterHotKey(Keys.OemSemicolon, KeyModifiers.Control);
-            insertForwardArrow2 = HotKeyManager.RegisterHotKey(Keys.L, KeyModifiers.Control);
+            hotKeyNumber2 = HotKeyManager.RegisterHotKey(Keys.OemSemicolon, KeyModifiers.Control);
+            hotKeyNumberImage2 = HotKeyManager.RegisterHotKey(Keys.OemQuotes, KeyModifiers.Control);
+            insertIncreaseArrow2 = HotKeyManager.RegisterHotKey(Keys.Oem4, KeyModifiers.Control);
+            insertDecreaseArrow2 = HotKeyManager.RegisterHotKey(Keys.Oem6, KeyModifiers.Control);
+            insertForwardArrow2 = HotKeyManager.RegisterHotKey(Keys.OemPipe, KeyModifiers.Control);
         }
 
         static void UnregisterKeys()
